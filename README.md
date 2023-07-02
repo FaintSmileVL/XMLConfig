@@ -6,7 +6,7 @@ Just add the library, extend class XMLConfig and use it's methods for getting va
 
 Simple example:
 
-```
+```Java
 public class Foo extends XMLConfig {
     @Override
     public void load() {
