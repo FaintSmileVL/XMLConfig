@@ -6,6 +6,7 @@ Just add the library, extend class XMLConfig and use it's methods for getting va
 
 Simple example:
 
+```
 public class Foo extends XMLConfig {
     @Override
     public void load() {
@@ -32,3 +33,4 @@ public class Foo extends XMLConfig {
         return getValueInt("foo", dflt);
     }
 }
+```
