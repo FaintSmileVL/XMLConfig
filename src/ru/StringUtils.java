@@ -1,3 +1,5 @@
+package ru;
+
 /**
  * @author : faint
  * @date : 02.07.2023

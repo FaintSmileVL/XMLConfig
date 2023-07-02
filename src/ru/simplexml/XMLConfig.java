@@ -1,3 +1,5 @@
+package ru.simplexml;
+
 import org.apache.commons.lang.math.NumberUtils;
 import org.w3c.dom.Node;
 

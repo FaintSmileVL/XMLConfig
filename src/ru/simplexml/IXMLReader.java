@@ -1,4 +1,7 @@
+package ru.simplexml;
+
 import org.w3c.dom.Node;
+import ru.StringUtils;
 
 /**
  * @author : faint
