@@ -1,10 +1,11 @@
 package ru.simplexml;
 
 import org.apache.commons.lang.math.NumberUtils;
+import org.slf4j.Logger;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import java.util.HashMap;
-import org.slf4j.Logger;
 
 /**
  * @author : faint
@@ -66,5 +67,31 @@ public abstract class XMLConfig implements IConfig {
         } else {
             settings.putIfAbsent(get(node, "name"), value);
         }
+    }
+
+    /**
+     * Returns first child of <list>
+     *
+     * @param doc
+     * @return
+     */
+    public Node getFirstChildOfList(Document doc) {
+        return getFirstChildOf(doc, "list");
+    }
+
+    /**
+     * Returns first child of (@nodeName) node
+     *
+     * @param head
+     * @param nodeName
+     * @return
+     */
+    public Node getFirstChildOf(Node head, String nodeName) {
+        for (var node = head.getFirstChild(); node != null; node = node.getNextSibling()) {
+            if (isNodeName(node, nodeName)) {
+                return node;
+            }
+        }
+        return head;
     }
 }
