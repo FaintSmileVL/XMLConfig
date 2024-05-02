@@ -89,7 +89,7 @@ public abstract class XMLConfig implements IConfig {
     public Node getFirstChildOf(Node head, String nodeName) {
         for (var node = head.getFirstChild(); node != null; node = node.getNextSibling()) {
             if (isNodeName(node, nodeName)) {
-                return node;
+                return node.getFirstChild();
             }
         }
         return head;
