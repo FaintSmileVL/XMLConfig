@@ -39,4 +39,11 @@ public interface IConfig  extends IXMLReader {
         factory1.setIgnoringComments(true);
         return factory1.newDocumentBuilder().parse(file);
     }
+
+    default Document getDocument(File file) throws ParserConfigurationException, IOException, SAXException {
+        DocumentBuilderFactory factory1 = DocumentBuilderFactory.newInstance();
+        factory1.setValidating(false);
+        factory1.setIgnoringComments(true);
+        return factory1.newDocumentBuilder().parse(file);
+    }
 }
