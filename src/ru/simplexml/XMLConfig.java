@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author : faint
@@ -22,6 +23,26 @@ import java.util.List;
  */
 public abstract class XMLConfig implements IConfig {
     public HashMap<String, Object> settings = new HashMap<>();
+    private final AtomicBoolean isReloading = new AtomicBoolean(false);
+
+    protected XMLConfig() {
+        load0();
+    }
+
+    private void load0() {
+        if (!isReloading.compareAndSet(false, true)) {
+            return;
+        }
+        try {
+            load();
+        } finally {
+            isReloading.set(false);
+        }
+    }
+
+    public void reload() {
+        load0();
+    }
 
     protected void putValue(String key, Object value) {
         settings.putIfAbsent(key, value);
