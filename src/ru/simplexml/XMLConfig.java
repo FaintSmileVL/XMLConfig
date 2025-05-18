@@ -229,7 +229,7 @@ public abstract class XMLConfig implements IConfig {
             if (val == null) {
                 return dflt;
             }
-            String strs[] = get(n, item).split(";");
+            String strs[] = get(n, item).split("\\s*[;,]\\s*");
             int values[] = new int[strs.length];
             for (int i = 0; i < strs.length; i++) {
                 values[i] = Integer.parseInt(strs[i]);
