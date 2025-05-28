@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.regex.Pattern;
 
 /**
  * @author : faint
@@ -28,10 +27,19 @@ import java.util.regex.Pattern;
 public abstract class XMLConfig implements IConfig {
     public HashMap<String, Object> settings = new HashMap<>();
     private final AtomicBoolean isReloading = new AtomicBoolean(false);
-    private static final Pattern DOUBLE_PATTERN = Pattern.compile(".*[.eE].*");
+    private boolean initialized = false;
 
     protected XMLConfig() {
-        load0();
+    }
+
+    /**
+     * For initialization. Example: Foo.getInstance().initialize();
+     */
+    public void initialize() {
+        if (!initialized) {
+            load0();
+            initialized = true;
+        }
     }
 
     private void load0() {
