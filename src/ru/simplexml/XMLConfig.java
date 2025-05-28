@@ -1,6 +1,6 @@
 package ru.simplexml;
 
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -11,10 +11,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Pattern;
 
 /**
  * @author : faint
@@ -24,6 +28,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class XMLConfig implements IConfig {
     public HashMap<String, Object> settings = new HashMap<>();
     private final AtomicBoolean isReloading = new AtomicBoolean(false);
+    private static final Pattern DOUBLE_PATTERN = Pattern.compile(".*[.eE].*");
 
     protected XMLConfig() {
         load0();
@@ -55,27 +60,27 @@ public abstract class XMLConfig implements IConfig {
 
     @Override
     public String getValueStr(String key, String dflt) {
-        return (String)settings.getOrDefault(key, dflt);
+        return (String) settings.getOrDefault(key, dflt);
     }
 
     @Override
     public int getValueInt(String key, Integer dflt) {
-        return (Integer)settings.getOrDefault(key, dflt);
+        return (Integer) settings.getOrDefault(key, dflt);
     }
 
     @Override
     public double getValueDouble(String key, Double dflt) {
-        return (100. - (double)settings.getOrDefault(key, dflt)) / 100.;
+        return (100. - (double) settings.getOrDefault(key, dflt)) / 100.;
     }
 
     @Override
     public long getValueLong(String key, Long dflt) {
-        return (Long)settings.getOrDefault(key, dflt);
+        return (Long) settings.getOrDefault(key, dflt);
     }
 
     @Override
     public boolean getValueBool(String key, Boolean dflt) {
-        return (Boolean)settings.getOrDefault(key, dflt);
+        return (Boolean) settings.getOrDefault(key, dflt);
     }
 
     protected void compute(String key, Object value) {
@@ -88,9 +93,30 @@ public abstract class XMLConfig implements IConfig {
             return;
         }
         String value = get(node, "val");
-        if (NumberUtils.isNumber(value)) {
-            settings.putIfAbsent(get(node, "name"), Integer.parseInt(value));
-        } else if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")) {
+        if (NumberUtils.isCreatable(value)) {
+            try {
+                String key = get(node, "name");
+                NumberFormat format = NumberFormat.getInstance(Locale.US);
+                Number number = format.parse(value);
+
+                if (number.doubleValue() % 1 == 0) {
+                    // Целое число
+                    long l = number.longValue();
+                    if (l >= Integer.MIN_VALUE && l <= Integer.MAX_VALUE) {
+                        settings.putIfAbsent(key, (int) l);
+                    } else {
+                        settings.putIfAbsent(key, l);
+                    }
+                } else {
+                    // Дробное число
+                    settings.putIfAbsent(key, number.doubleValue());
+                }
+                return;
+            } catch (ParseException e) {
+                return;
+            }
+        }
+        if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")) {
             settings.putIfAbsent(get(node, "name"), Boolean.parseBoolean(value));
         } else {
             settings.putIfAbsent(get(node, "name"), value);

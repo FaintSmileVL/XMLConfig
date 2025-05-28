@@ -8,7 +8,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="slf4j.log4j12" level="project" />
-    <orderEntry type="library" exported="" name="commons.lang" level="project" />
     <orderEntry type="library" exported="" name="commons.io" level="project" />
+    <orderEntry type="library" exported="" name="commons-lang3-3.17.0" level="project" />
   </component>
 </module>
