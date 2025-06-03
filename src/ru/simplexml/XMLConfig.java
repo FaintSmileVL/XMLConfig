@@ -78,7 +78,7 @@ public abstract class XMLConfig implements IConfig {
 
     @Override
     public double getValueDouble(String key, Double dflt) {
-        return (100. - (double) settings.getOrDefault(key, dflt)) / 100.;
+        return (double) settings.getOrDefault(key, dflt);
     }
 
     @Override
