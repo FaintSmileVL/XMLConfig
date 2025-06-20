@@ -5,7 +5,7 @@ package ru.simplexml;
  * @date : 02.07.2023
  * @time : 14:47
  */
-public interface IConfig extends IXMLReader {
+public interface IConfig {
     Object getValue(String key);
 
     String getValueStr(String key, String dflt);
