@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.github.FaintSmileVL'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(23)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    implementation 'org.slf4j:slf4j-api:2.0.17'
+    implementation 'org.apache.commons:commons-lang3:3.17.0'
+}
